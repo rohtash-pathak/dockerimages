@@ -8,4 +8,5 @@ node {
         /* Push the container to the custom Registry */
         customImage.push()
     }
+    echo "Trying to Push Docker Build to DockerHub"
 }
