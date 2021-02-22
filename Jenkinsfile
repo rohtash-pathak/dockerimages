@@ -1,14 +1,11 @@
-pipeline {
-    agent {
-        docker {image 'node:14-alpine'}
+node {
+    checkout scm
+
+    docker.withRegistry('https://registry.example.com', 'DockerHub') {
+
+        def customImage = docker.build("my-image:${env.BUILD_ID}")
+
+        /* Push the container to the custom Registry */
+        customImage.push()
     }
-    stages {
-        stage('Test') {
-            steps {
-                sh 'node --version'
-            }
-        }
-
-        }
-  }
-
+}
