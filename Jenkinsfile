@@ -1,14 +1,19 @@
 node('docker') {
-    checkout scm
+    def customImage
+    
+    stage('clone repositories') {
+        checkout scm
+    }
 
-    docker.withRegistry('https://registry.hub.docker.com/', 'DockerHub') {
-        /* below command will build the image under rohitashpathak89 account in repo dockeragent
-        and tag with the build number */
+    stage('Build Image') {
+        customImage = docker.build("rohitashpathak89/dockeragent:${env.BUILD_ID}")
+    }
 
-        def customImage = docker.build("rohitashpathak89/dockeragent:${env.BUILD_ID}")
-
+    stage('Push the Image') {
+        docker.withRegistry('https://registry.hub.docker.com/', 'DockerHub') {
         /* Push the container to the custom Registry */
-        customImage.push()
+            customImage.push()
     }
     echo "Trying to Push Docker Build to DockerHub"
+    }
 }
