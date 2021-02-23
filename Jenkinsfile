@@ -1,4 +1,4 @@
-node {
+node('docker') {
     checkout scm
 
     docker.withRegistry('https://registry.hub.docker.com/', 'DockerHub') {
